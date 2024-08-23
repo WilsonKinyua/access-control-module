@@ -2,6 +2,7 @@
 import { toast } from "vue-sonner";
 // @ts-ignore
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { useForm } from "vee-validate";
 import { Loader2 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,7 @@ const { handleSubmit, values, resetForm } = useForm({
 
 const store = useStore();
 const isLoading = ref(false);
+const router = useRouter();
 
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
@@ -49,6 +51,7 @@ const onSubmit = handleSubmit(async (values) => {
     await store.dispatch("auth/login", values);
     toast.success("Login successful");
     resetForm();
+    router.push("/");
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
       toast.error(error.response.data.message.join(", "));

@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import store from '../store';
-import DashboardView from '@/views/DashboardView.vue'
+import DashboardView from '@/views/DashboardView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 
@@ -13,9 +13,9 @@ const router = createRouter({
       component: DashboardView,
       beforeEnter: (to, from, next) => {
         if (store.getters['auth/isAuthenticated']) {
-          next()
+          next();
         } else {
-          next({ name: 'auth' })
+          next({ name: 'auth' });
         }
       }
     },
@@ -25,9 +25,9 @@ const router = createRouter({
       component: LoginView,
       beforeEnter: (to, from, next) => {
         if (store.getters['auth/isAuthenticated']) {
-          next({ name: 'dashboard' })
+          next({ name: 'dashboard' });
         } else {
-          next()
+          next();
         }
       }
     },
@@ -37,13 +37,13 @@ const router = createRouter({
       component: RegisterView,
       beforeEnter: (to, from, next) => {
         if (store.getters['auth/isAuthenticated']) {
-          next({ name: 'dashboard' })
+          next({ name: 'dashboard' });
         } else {
-          next()
+          next();
         }
       }
     },
   ]
-})
+});
 
-export default router
+export default router;
