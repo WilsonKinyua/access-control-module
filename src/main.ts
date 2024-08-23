@@ -1,15 +1,13 @@
-import "./assets/scss/index.scss";
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { HttpRequestExceptionFilter } from './common/filters/http-request-exception.filter';
 
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-
-const app = createApp(App);
-
-// Initialize the auth module
-store.dispatch("auth/initializeAuth");
-
-app.use(router);
-app.use(store);
-app.mount("#app");
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors(); // enable CORS
+  app.useGlobalPipes(new ValidationPipe()); // global validation pipe
+  app.useGlobalFilters(new HttpRequestExceptionFilter()); // global exception filter
+  await app.listen(3000);
+}
+bootstrap();
