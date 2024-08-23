@@ -1,15 +1,22 @@
 <script setup lang="ts">
+import { computed } from "vue";
+// @ts-ignore
+import { useStore } from "vuex";
 import MainNav from "@/components/MainNav.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import UserNav from "@/components/UserNav.vue";
+import UserTable from "@/components/UserTable.vue";
+
+const store = useStore();
+const users = computed(() => store.getters["users/allUsers"]);
+
+// fetch users from the store
+const fetchUsers = () => {
+  store.dispatch("users/fetchUsers");
+};
+
+fetchUsers();
 </script>
 
 <template>
@@ -24,7 +31,8 @@ import UserNav from "@/components/UserNav.vue";
       </div>
     </div>
   </div>
-  <main class="container mx-auto py-10">
+  <main class="container mx-auto space-y-4 pt-10">
+    <h1 class="text-2xl font-semibold">Dashboard</h1>
     <div class="grid gap-4 lg:grid-cols-2">
       <Card class="bg-primary text-white">
         <CardHeader
@@ -48,7 +56,7 @@ import UserNav from "@/components/UserNav.vue";
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">
-            {{ "00" }}
+            {{ users.length }}
           </div>
         </CardContent>
       </Card>
@@ -76,6 +84,14 @@ import UserNav from "@/components/UserNav.vue";
           </div>
         </CardContent>
       </Card>
+    </div>
+    <div class="space-y-5">
+      <div class="flex justify-between items-center">
+        <h2 class="lg:text-xl font-bold tracking-tight">Latest Users</h2>
+      </div>
+      <UserTable 
+      />
+      <!-- :limit="5" -->
     </div>
   </main>
 </template>

@@ -1,3 +1,4 @@
+import type { User } from '@/types/User';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -5,7 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface AuthState {
     token: string | null;
-    user: any | null;
+    user: User | null;
 }
 
 export const auth = {
@@ -23,7 +24,7 @@ export const auth = {
             state.token = token;
             localStorage.setItem('token', token);
         },
-        setUser(state: AuthState, user: any) {
+        setUser(state: AuthState, user: User) {
             state.user = user;
             localStorage.setItem('user', JSON.stringify(user));
         },
@@ -46,7 +47,7 @@ export const auth = {
                 throw new Error(error.response.data.message);
             }
         },
-        async register({ commit }: { commit: Function }, userData: any) {
+        async register({ commit }: { commit: Function }, userData: User) {
             try {
                 const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
             } catch (error: any) {
