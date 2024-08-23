@@ -42,8 +42,8 @@ export const auth = {
             try {
                 const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
                 commit('setToken', response.data.access_token);
-            } catch (error) {
-                throw new Error('Registration failed');
+            } catch (error: any) {
+                throw new Error(error.response.data.message);
             }
         },
         logout({ commit }: { commit: Function }) {
