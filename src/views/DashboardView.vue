@@ -10,6 +10,7 @@ import UserTable from "@/components/UserTable.vue";
 
 const store = useStore();
 const users = computed(() => store.getters["users/allUsers"]);
+const userRole = computed(() => store.getters["auth/userRole"]);
 
 // fetch users from the store
 const fetchUsers = () => {
@@ -34,7 +35,10 @@ fetchUsers();
   <main class="container mx-auto space-y-4 pt-10">
     <h1 class="text-2xl font-semibold">Dashboard</h1>
     <div class="grid gap-4 lg:grid-cols-2">
-      <Card class="bg-primary text-white">
+      <Card
+        class="bg-primary text-white"
+        v-if="userRole === 'Admin' || userRole === 'Project Manager'"
+      >
         <CardHeader
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
@@ -85,13 +89,14 @@ fetchUsers();
         </CardContent>
       </Card>
     </div>
-    <div class="space-y-5">
+    <div
+      class="space-y-5"
+      v-if="userRole === 'Admin' || userRole === 'Project Manager'"
+    >
       <div class="flex justify-between items-center">
         <h2 class="lg:text-xl font-bold tracking-tight">Latest Users</h2>
       </div>
-      <UserTable 
-      />
-      <!-- :limit="5" -->
+      <UserTable :limit="5" />
     </div>
   </main>
 </template>

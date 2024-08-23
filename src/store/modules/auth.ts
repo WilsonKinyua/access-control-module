@@ -18,6 +18,7 @@ export const auth = {
     getters: {
         isAuthenticated: (state: AuthState) => !!state.token,
         getUser: (state: AuthState) => state.user,
+        userRole: (state: AuthState) => state.user?.role || null,
     },
     mutations: {
         setToken(state: AuthState, token: string) {
@@ -40,7 +41,7 @@ export const auth = {
             try {
                 const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
                 const token = response.data.access_token;
-                const user = jwtDecode(token);
+                const user = jwtDecode<User>(token);
                 commit('setToken', token);
                 commit('setUser', user);
             } catch (error: any) {
@@ -49,7 +50,7 @@ export const auth = {
         },
         async register({ commit }: { commit: Function }, userData: User) {
             try {
-                const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+                await axios.post(`${API_BASE_URL}/auth/register`, userData);
             } catch (error: any) {
                 throw new Error(error.response.data.message);
             }
