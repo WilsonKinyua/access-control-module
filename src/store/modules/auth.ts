@@ -49,10 +49,6 @@ export const auth = {
         async register({ commit }: { commit: Function }, userData: any) {
             try {
                 const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
-                const token = response.data.access_token;
-                const user = jwtDecode(token);
-                commit('setToken', token);
-                commit('setUser', user);
             } catch (error: any) {
                 throw new Error(error.response.data.message);
             }
