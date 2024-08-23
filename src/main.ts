@@ -8,6 +8,7 @@ async function bootstrap() {
   app.enableCors(); // enable CORS
   app.useGlobalPipes(new ValidationPipe()); // global validation pipe
   app.useGlobalFilters(new HttpRequestExceptionFilter()); // global exception filter
-  await app.listen(3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
 }
 bootstrap();
