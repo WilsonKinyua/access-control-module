@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store';
 import DashboardView from '@/views/DashboardView.vue'
-import AuthView from '@/views/AuthView.vue';
+import LoginView from '@/views/LoginView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,12 +9,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'dashboard',
-      component: DashboardView
+      component: DashboardView,
+      beforeEnter: (to, from, next) => {
+        if (store.getters['auth/isAuthenticated']) {
+          next()
+        } else {
+          next({ name: 'auth' })
+        }
+      }
     },
     {
-      path: '/auth',
+      path: '/auth/login',
       name: 'auth',
-      component: AuthView,
+      component: LoginView,
       beforeEnter: (to, from, next) => {
         if (store.getters['auth/isAuthenticated']) {
           next({ name: 'dashboard' })
