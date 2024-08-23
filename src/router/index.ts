@@ -3,6 +3,7 @@ import store from '../store';
 import DashboardView from '@/views/DashboardView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import UsersView from '@/views/UsersView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,18 @@ const router = createRouter({
           next({ name: 'dashboard' });
         } else {
           next();
+        }
+      }
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: UsersView,
+      beforeEnter: (to, from, next) => {
+        if (store.getters['auth/isAuthenticated']) {
+          next();
+        } else {
+          next({ name: 'auth' });
         }
       }
     },
