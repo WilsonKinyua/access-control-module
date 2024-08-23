@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { User } from '@/types/User'
 
-export function createColumns({ viewUser, deleteUser, editUser }: { viewUser: (id: number) => void, deleteUser: (id: number) => void, editUser: (User: User) => void }): ColumnDef<User>[] {
+export function createColumns({ deleteUser, editUser }: { deleteUser: (id: number) => void, editUser: (User: User) => void }): ColumnDef<User>[] {
     return [
         {
             accessorKey: 'firstName',
@@ -110,12 +110,6 @@ export function createColumns({ viewUser, deleteUser, editUser }: { viewUser: (i
             header: () => h('div', { class: 'text-right font-medium' }, 'Actions'),
             cell: ({ row }) => {
                 return h('div', { class: 'text-right font-medium flex float-right space-x-3 items-center' }, [
-                    h(Eye, {
-                        class: 'cursor-pointer h-4 w-4 text-primary',
-                        onClick: () => {
-                            viewUser(row.original.id);
-                        },
-                    }),
                     h(Pencil, {
                         class: 'cursor-pointer h-4 w-4 text-blue-500',
                         onClick: () => {
