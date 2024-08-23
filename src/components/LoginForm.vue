@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { toast } from "vue-sonner";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 // @ts-ignore
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useForm } from "vee-validate";
-import { Loader2 } from "lucide-vue-next";
+import { Copy, Loader2 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { toTypedSchema } from "@vee-validate/zod";
 import { RouterLink } from "vue-router";
@@ -33,7 +42,7 @@ const schema = z.object({
   password: z.string().nonempty("Password is required"),
 });
 
-const { handleSubmit, values, resetForm } = useForm({
+const { handleSubmit, values, resetForm, setFieldValue } = useForm({
   validationSchema: toTypedSchema(schema),
   initialValues: {
     email: "",
@@ -62,6 +71,11 @@ const onSubmit = handleSubmit(async (values) => {
     isLoading.value = false;
   }
 });
+
+const prefillForm = (email: string, password: string) => {
+  setFieldValue("email", email);
+  setFieldValue("password", password);
+};
 </script>
 
 <template>
@@ -106,13 +120,70 @@ const onSubmit = handleSubmit(async (values) => {
         </FormField>
       </CardContent>
       <CardFooter>
-        <Button type="submit" :disabled="isLoading" class="w-full">
-          <div v-if="isLoading" class="flex items-center justify-center">
-            Please wait
-            <Loader2 class="w-4 h-4 mr-2 animate-spin ml-2" />
-          </div>
-          <span v-else>Login</span>
-        </Button>
+        <div class="w-full">
+          <Table class="mb-4 text-sm">
+            <TableCaption>Test credentials</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead> Type </TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Password</TableHead>
+                <TableHead> </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell class="font-bold"> Admin </TableCell>
+                <TableCell>Antwan30@yahoo.com</TableCell>
+                <TableCell>YhpI2Ubgc1_GYHa</TableCell>
+                <TableCell>
+                  <Copy
+                    name="edit"
+                    @click="
+                      prefillForm('Antwan30@yahoo.com', 'YhpI2Ubgc1_GYHa')
+                    "
+                    class="w-4 h-4 cursor-pointer text-primary"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell class="font-bold"> Project <br> Manager </TableCell>
+                <TableCell>Cale.Hahn1@gmail.com</TableCell>
+                <TableCell>12mA6LfilLNOG7o</TableCell>
+                <TableCell>
+                  <Copy
+                    name="edit"
+                    @click="
+                      prefillForm('Cale.Hahn1@gmail.com', '12mA6LfilLNOG7o')
+                    "
+                    class="w-4 h-4 cursor-pointer text-primary"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell class="font-bold"> Engineer</TableCell>
+                <TableCell>Eula.Aufderhar56@gmail.com</TableCell>
+                <TableCell>wozOGPwQeNGRhki</TableCell>
+                <TableCell>
+                  <Copy
+                    name="edit"
+                    @click="
+                      prefillForm('Eula.Aufderhar56@gmail.com', 'wozOGPwQeNGRhki')
+                    "
+                    class="w-4 h-4 cursor-pointer text-primary"
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Button type="submit" :disabled="isLoading" class="w-full">
+            <div v-if="isLoading" class="flex items-center justify-center">
+              Please wait
+              <Loader2 class="w-4 h-4 mr-2 animate-spin ml-2" />
+            </div>
+            <span v-else>Login</span>
+          </Button>
+        </div>
       </CardFooter>
     </form>
     <CardContent>
