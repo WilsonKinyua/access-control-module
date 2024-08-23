@@ -7,9 +7,11 @@ import ThemeToggle from "@/components/ThemeToggle.vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import UserNav from "@/components/UserNav.vue";
 import UserTable from "@/components/UserTable.vue";
+import ProjectTable from "@/components/ProjectTable.vue";
 
 const store = useStore();
 const users = computed(() => store.getters["users/allUsers"]);
+const projects = computed(() => store.getters["projects/allProjects"]);
 const userRole = computed(() => store.getters["auth/userRole"]);
 
 // fetch users from the store
@@ -17,7 +19,13 @@ const fetchUsers = () => {
   store.dispatch("users/fetchUsers");
 };
 
+// fetch projects from the store
+const fetchProjects = () => {
+  store.dispatch("projects/fetchProjects");
+};
+
 fetchUsers();
+fetchProjects();
 </script>
 
 <template>
@@ -84,7 +92,7 @@ fetchUsers();
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">
-            {{ "00" }}
+            {{ projects.length }}
           </div>
         </CardContent>
       </Card>
@@ -97,6 +105,12 @@ fetchUsers();
         <h2 class="lg:text-xl font-bold tracking-tight">Latest Users</h2>
       </div>
       <UserTable :limit="5" />
+    </div>
+    <div class="space-y-5">
+      <div class="flex justify-between items-center">
+        <h2 class="lg:text-xl font-bold tracking-tight">Latest Projects</h2>
+      </div>
+      <ProjectTable :limit="5" />
     </div>
   </main>
 </template>

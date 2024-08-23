@@ -111,7 +111,7 @@ getProjects();
         />
         <Sheet
           v-model:open="isSheetOpen"
-          v-if="userRole === 'Admin' || userRole === 'Project Manager'"
+          v-if="userRole === 'Admin'"
         >
           <SheetTrigger>
             <Button @click="isSheetOpen = false"> <Plus /> Add Project </Button>
