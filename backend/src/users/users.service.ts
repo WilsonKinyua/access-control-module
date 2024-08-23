@@ -48,7 +48,7 @@ export class UsersService {
   // Get all users
   async findAll(): Promise<User[]> {
     try {
-      return await this.userRepository.find({ relations: ['role'] }); // Get all users with their roles
+      return await this.userRepository.find({ relations: ['role'], order: { id: 'DESC' } }); // Get all users with their roles
     } catch (error) {
       throw new Error(error.message);
     }
