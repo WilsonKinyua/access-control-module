@@ -6,6 +6,7 @@ import { useForm } from "vee-validate";
 import { Loader2 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { toTypedSchema } from "@vee-validate/zod";
+import { RouterLink } from "vue-router";
 import * as z from "zod";
 import {
   Card,
@@ -63,7 +64,9 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Card>
     <CardHeader class="space-y-1">
-      <CardTitle class="text-2xl"> Login to your account </CardTitle>
+      <CardTitle class="text-2xl text-center">
+        Login to your account
+      </CardTitle>
       <CardDescription>
         Enter your email and password to access your account
       </CardDescription>
@@ -118,8 +121,8 @@ const onSubmit = handleSubmit(async (values) => {
           <span class="bg-background px-2 text-muted-foreground"> Or </span>
         </div>
       </div>
-      <Button class="w-full my-2" variant="secondary" size="sm">
-        Create an account
+      <Button class="w-full my-2" variant="secondary" size="sm" as-child>
+        <RouterLink to="/auth/register">Create an account</RouterLink>
       </Button>
     </CardContent>
   </Card>
