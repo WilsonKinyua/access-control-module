@@ -6,6 +6,7 @@ import { useForm } from "vee-validate";
 import { Loader2 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { toTypedSchema } from "@vee-validate/zod";
+import * as z from "zod";
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import * as z from "zod";
 import {
   FormControl,
   FormField,
@@ -41,7 +41,7 @@ const schema = z.object({
   attachments: z.array(z.string()).optional(),
 });
 
-const { handleSubmit, values, resetForm } = useForm({
+const { handleSubmit, values, resetForm, setFieldValue } = useForm({
   validationSchema: toTypedSchema(schema),
   initialValues: {
     firstName: "",
@@ -61,6 +61,12 @@ const isLoading = ref(false);
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
   try {
+    // file objects to base64 strings
+    const attachments = await Promise.all(
+      (values.attachments || []).map((file: any) => convertFileToBase64(file))
+    );
+    values.attachments = attachments;
+
     await store.dispatch("auth/register", values);
     toast.success("Registration successful. Please login", {
       duration: 10000,
@@ -77,6 +83,21 @@ const onSubmit = handleSubmit(async (values) => {
     isLoading.value = false;
   }
 });
+
+// const handleFileChange = (event: Event) => {
+//   const target = event.target as HTMLInputElement;
+//   const files = Array.from(target.files || []) as any;
+//   setFieldValue("attachments", files);
+// };
+
+const convertFileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
 </script>
 
 <template>
@@ -142,7 +163,7 @@ const onSubmit = handleSubmit(async (values) => {
               <Input
                 id="phoneNumber"
                 type="text"
-                placeholder="Eg. +254 700 000 000"
+                placeholder="Eg. 254700000000"
                 v-bind="componentField"
               />
             </FormControl>
@@ -195,12 +216,7 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>Attachments</FormLabel>
             <FormControl>
-              <Input
-                id="attachments"
-                type="file"
-                multiple
-                v-bind="componentField"
-              />
+              <Input id="attachments" type="file" multiple />
             </FormControl>
             <FormMessage />
           </FormItem>
