@@ -25,7 +25,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [User, Role, Project],
-      // synchronize: true, // setting to true to auto create tables (dev only)
+      synchronize: true, // setting to true to auto create tables (dev only)
     }),
     UsersModule,
     ProjectsModule,
