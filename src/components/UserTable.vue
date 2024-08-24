@@ -97,7 +97,7 @@ getUsers();
 <template>
   <div class="h-full flex-1 flex-col space-y-8 md:flex">
     <div class="space-y-8">
-      <div class="flex justify-between items-center">
+      <div class="lg:flex lg:justify-between lg:items-center">
         <Input
           v-model="searchQuery"
           type="text"
